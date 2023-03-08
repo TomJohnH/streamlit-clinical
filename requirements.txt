@@ -1,1 +1,5 @@
 pandas_profiling
+streamlit_pandas_profiling
+streamlit_timeline
+plotly.express
+pandas
