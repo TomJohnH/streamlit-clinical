@@ -72,7 +72,7 @@ with tab2:
     )
 
     # Filter DataFrame based on selected values
-    filtered_df2 = df[df["ChestPainType"].isin(selected_cp_types)]
+    filtered_df2 = filtered_df[filtered_df["ChestPainType"].isin(selected_cp_types)]
 
     # Group data by ChestPainType and HeartDisease, and count the number of occurrences
     counts = (
