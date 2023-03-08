@@ -25,6 +25,7 @@ with tab1:
     # st.image("https://static.streamlit.io/examples/cat.jpg", width=200)
 
 with tab2:
+    st.subheader("Study summary")
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric(label="Number of patients", value=len(df.index))
@@ -46,30 +47,38 @@ with tab2:
     #     ["Green", "Yellow", "Red", "Blue"],
     #     ["Yellow", "Red"],
     # )
+    st.subheader("Histograms")
+    col1, col2 = st.columns(2)
 
-    # Select only numerical columns
-    numerical_cols = df.select_dtypes(include=["float", "int"]).columns.tolist()
+    with col1:
 
-    selected_column = st.selectbox("Select a column:", options=numerical_cols)
+        st.write("Please select variable and range ")
 
-    # Define min and max ages
-    min_age = int(df[selected_column].min())
-    max_age = int(df[selected_column].max())
+        # Select only numerical columns
+        numerical_cols = df.select_dtypes(include=["float", "int"]).columns.tolist()
 
-    # Add slider
-    age_range = st.slider("Select age range", min_age, max_age, (min_age, max_age))
+        selected_column = st.selectbox("Select a column:", options=numerical_cols)
 
-    st.write("Below we present histogram of patients age")
+        # Define min and max ages
+        min_var = int(df[selected_column].min())
+        max_var = int(df[selected_column].max())
 
-    # Filter DataFrame
-    filtered_df = df[
-        (df[selected_column] >= age_range[0]) & (df[selected_column] <= age_range[1])
-    ]
+        # Add slider
+        var_range = st.slider("Select age range", min_var, max_var, (min_var, max_var))
+    with col2:
+        st.write("Below we present histogram of patients " + selected_column)
 
-    # Create histogram
-    fig = px.histogram(filtered_df, x=selected_column)
-    st.plotly_chart(fig)
+        # Filter DataFrame
+        filtered_df = df[
+            (df[selected_column] >= var_range[0])
+            & (df[selected_column] <= var_range[1])
+        ]
 
+        # Create histogram
+        fig = px.histogram(filtered_df, x=selected_column)
+        st.plotly_chart(fig, use_container_width=True)
+
+    st.subheader("Type of chest pains vs Heart Disease")
     # Define unique ChestPainType values
     cp_types = df["ChestPainType"].unique()
 
