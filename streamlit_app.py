@@ -47,9 +47,14 @@ with tab2:
     #     ["Yellow", "Red"],
     # )
 
+    # Select only numerical columns
+    numerical_cols = df.select_dtypes(include=["float", "int"]).columns.tolist()
+
+    selected_column = st.selectbox("Select a column:", options=numerical_cols)
+
     # Define min and max ages
-    min_age = int(df["Age"].min())
-    max_age = int(df["Age"].max())
+    min_age = int(df[selected_column].min())
+    max_age = int(df[selected_column].max())
 
     # Add slider
     age_range = st.slider("Select age range", min_age, max_age, (min_age, max_age))
@@ -57,10 +62,12 @@ with tab2:
     st.write("Below we present histogram of patients age")
 
     # Filter DataFrame
-    filtered_df = df[(df["Age"] >= age_range[0]) & (df["Age"] <= age_range[1])]
+    filtered_df = df[
+        (df[selected_column] >= age_range[0]) & (df[selected_column] <= age_range[1])
+    ]
 
     # Create histogram
-    fig = px.histogram(filtered_df, x="Age")
+    fig = px.histogram(filtered_df, x=selected_column)
     st.plotly_chart(fig)
 
     # Define unique ChestPainType values
