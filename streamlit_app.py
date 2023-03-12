@@ -78,30 +78,32 @@ with tab2:
         fig = px.histogram(filtered_df, x=selected_column)
         st.plotly_chart(fig, use_container_width=True)
 
-    st.subheader("Type of chest pains vs Heart Disease")
-    # Define unique ChestPainType values
-    cp_types = df["ChestPainType"].unique()
+    with st.expander("Chest pains vs Heart Disease"):
+        st.subheader("Type of chest pains vs Heart Disease")
 
-    # Add multiselect widget
-    selected_cp_types = st.multiselect(
-        "Select ChestPainType values", cp_types, default=cp_types
-    )
+        # Define unique ChestPainType values
+        cp_types = df["ChestPainType"].unique()
 
-    # Filter DataFrame based on selected values
-    filtered_df2 = filtered_df[filtered_df["ChestPainType"].isin(selected_cp_types)]
+        # Add multiselect widget
+        selected_cp_types = st.multiselect(
+            "Select ChestPainType values", cp_types, default=cp_types
+        )
 
-    # Group data by ChestPainType and HeartDisease, and count the number of occurrences
-    counts = (
-        filtered_df2.groupby(["ChestPainType", "HeartDisease"])
-        .size()
-        .reset_index(name="Count")
-    )
+        # Filter DataFrame based on selected values
+        filtered_df2 = filtered_df[filtered_df["ChestPainType"].isin(selected_cp_types)]
 
-    # Create bar plot
-    fig = px.bar(counts, x="ChestPainType", y="Count", color="HeartDisease")
+        # Group data by ChestPainType and HeartDisease, and count the number of occurrences
+        counts = (
+            filtered_df2.groupby(["ChestPainType", "HeartDisease"])
+            .size()
+            .reset_index(name="Count")
+        )
 
-    # Display plot
-    st.plotly_chart(fig)
+        # Create bar plot
+        fig = px.bar(counts, x="ChestPainType", y="Count", color="HeartDisease")
+
+        # Display plot
+        st.plotly_chart(fig)
 
 
 with tab3:
